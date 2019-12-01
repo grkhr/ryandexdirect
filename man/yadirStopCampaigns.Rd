@@ -1,18 +1,17 @@
 \name{yadirStopCampaigns}
 \alias{yadirStopCampaigns}
 \title{Suspend impressions by Campaigns}
-\description{Suspend impressions by campaings in 'Yandex Direct' account}
+\description{yadirStopCampaigns suspend impressions by campaings in Yandex Direct account}
 \usage{
-yadirStopCampaigns(Login = NULL, Ids = NULL, Token = NULL, AgencyAccount
-                 = NULL, TokenPath = getwd())
+yadirStartCampaigns(Login = NULL, 
+					Ids   = NULL,
+					Token = NULL)
 }
 
 \arguments{
   \item{Ids}{Integer or Character vector with Campaigns Ids, who will suspend impressions}
   \item{Login}{Your Yandex Login}
-  \item{AgencyAccount}{Your agency account login, if you get statistic from client account}
   \item{Token}{Your Yandex API Token}
-  \item{TokenPath}{Path to directory where you save credential data}
 }
 \details{
 Function suspend impressions and return vector with Campaigns Ids with error.
@@ -21,15 +20,16 @@ Function suspend impressions and return vector with Campaigns Ids with error.
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
-# Get API token
-tok <- yadirGetToken(TokenPath = tempdir())
+#Get API token
+tok <- yadirGetToken()
 
-# Get camp dictionary
+#Get camp dictionary
 my_camp <- yadirGetCampaignList(Login = "Login", Token = tok)
 
-# Resume impressions
+#Resume impressions
 err <- yadirStopCampaigns(Login = "LOGIN", Token =  tok, Ids = my_camp$Id) 
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -4,31 +4,34 @@ yadirStartKeyWords <-  function(Login = NULL,
                                 AgencyAccount = NULL,
                                 TokenPath     = getwd()){
   
-  # auth
+  #Авторизация
   Token <- tech_auth(login = Login, token = Token, AgencyAccount = AgencyAccount, TokenPath = TokenPath)
   
   if(length(Ids) > 10000){
-    stop(paste0("In the parameter Ids transferred numbers ",length(Ids), " of keywords, maximum number of keywords per request is 10000."))
+    stop(paste0("В параметр Ids переданы номера ",length(Ids), " ключевых слов, максимально допустимое количество ключевых слов в одном запросе 10000."))
   }
   
   if(is.null(Ids)){
-    stop("In the Ids argument, you must pass a vector containing the Id of keywords for which you want to resume the display. You have not transferred any Id.")
+    stop("В аргумент Ids необходимо передать вектор содержаший Id ключевых слов по которым необходимо возобновить показ. Вы не передали ниодного Id.")
   }
   
-  # error counter
+  #Счётчик ошибок
   CounErr <- 0
   
-  # error vector
+  #Error vector
   errors_id <-  vector()
   
-  # start time
+  #Фиксируем время начала работы
   start_time  <- Sys.time()
   
-  # start message
+  #Задаём начальный offset
+  lim <- 0
+  
+  #Сообщение о начале обработки данных
   packageStartupMessage("Processing", appendLF = T)
   
   IdsPast <- paste0(Ids, collapse = ",")
-  # request body
+  #Формируем тело POST запроса
   queryBody <- paste0("{
                       \"method\": \"resume\",
                       \"params\": { 
@@ -37,21 +40,16 @@ yadirStartKeyWords <-  function(Login = NULL,
 }
 }")
   
-  # send query
-  answer <- POST("https://api.direct.yandex.com/json/v5/keywords", 
-                 body = queryBody, 
-				 add_headers(Authorization = paste0("Bearer ",Token), 
-				            'Accept-Language' = "ru",
-							"Client-Login" = Login))
-							
-  # parse answer
+  #Отправка запроса
+  answer <- POST("https://api.direct.yandex.com/json/v5/keywords", body = queryBody, add_headers(Authorization = paste0("Bearer ",Token), 'Accept-Language' = "ru","Client-Login" = Login))
+  #Парсим ответ
   ans_pars <- content(answer)
-  # check answer for errors
+  #Проверка ответа на наличие ошибки
   if(!is.null(ans_pars$error)){
-    stop(paste0("Error: ", ans_pars$error$error_string,". Message: ",ans_pars$error$error_detail, ". Request ID: ",ans_pars$error$request_id))
+    stop(paste0("Ошибка: ", ans_pars$error$error_string,". Сообщение: ",ans_pars$error$error_detail, ". ID Запроса: ",ans_pars$error$request_id))
   }
   
-  # check resume keywords
+  #Проверка необработанных кампаний
   for(error_search in 1:length(ans_pars$result$ResumeResults)){
     if(!is.null(ans_pars$result$ResumeResults[[error_search]]$Errors)){
       CounErr <- CounErr + 1
@@ -60,20 +58,20 @@ yadirStartKeyWords <-  function(Login = NULL,
     }
   }
   
-  # prepare result message
+  #Подготовка сообщения про количество остановленных кампаний
   out_message <- ""
   
   TotalCampStoped <- length(Ids) - CounErr
   
   if(TotalCampStoped %in% c(2,3,4) & !(TotalCampStoped %% 100 %in% c(12,13,14))){
-    out_message <- "keywords start"
+    out_message <- "ключевых слова запущено"
   } else if(TotalCampStoped %% 10 == 1 & TotalCampStoped %% 100 != 11){
-    out_message <- "keywords start"
+    out_message <- "ключевое слово запущено"
   } else {
-    out_message <- "keywords start"
+    out_message <- "ключевых слов запущено"
   }
   
-  # tech info
+  #Выводим информацию
   packageStartupMessage(paste0(TotalCampStoped, " ", out_message))
-  packageStartupMessage(paste0("Total time: ", as.integer(round(difftime(Sys.time(), start_time , units ="secs"),0)), " sec."))
+  packageStartupMessage(paste0("Общее время работы функции: ", as.integer(round(difftime(Sys.time(), start_time , units ="secs"),0)), " сек."))
   return(errors_id)}

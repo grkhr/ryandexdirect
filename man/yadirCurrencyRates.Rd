@@ -1,10 +1,9 @@
 \name{yadirCurrencyRates}
 \alias{yadirCurrencyRates}
-\title{Get currencies}
-\description{Exchange rates, currency parameters and restrictions.}
+\title{Get campaign list from yandex direct account}
+\description{yadirCurrencyRates get currency rates from Yandex Direct}
 \usage{
-yadirCurrencyRates(Login = NULL, AgencyAccount = NULL, Token = NULL,
-                 TokenPath = getwd())
+yadirCurrencyRates(logins = NULL, token = NULL)
 }
 
 \arguments{
@@ -17,18 +16,18 @@ yadirCurrencyRates(Login = NULL, AgencyAccount = NULL, Token = NULL,
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
 # from storage tokrn
 library(ryandexdirect)
-cur <- yadirCurrencyRates(Login = "login" ,
-                          TokenPath = tempdir())
+cur <- yadirCurrencyRates(Login         = "login" ,
+                          TokenPath     = "token_yandex")
 
 # from auth object
-
-aut <- yadirAuth(Login = "login", NewUser = TRUE, 
-        TokenPath = tempdir())
+library(ryandexdirect)
+aut <- yadirAuth(Login = "login", NewUser = TRUE, TokenPath = "token_yandex")
 cur2 <- yadirCurrencyRates(Login =  "login" ,
                            Token = aut)
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

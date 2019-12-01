@@ -12,12 +12,8 @@ yadirGetReport <- function(ReportType        = "CUSTOM_REPORT",
                            AgencyAccount     = NULL,
                            FetchBy           = NULL,
                            Token             = NULL,
-                           TokenPath         = getwd(),
-						   SkipErrors        = TRUE) {
+                           TokenPath         = getwd()) {
   st <- Sys.time()
-  
-  # for limited accounts
-  limit_reached <- c()
   
   # FetchBy
   if (!is.null(FetchBy)) {
@@ -39,37 +35,29 @@ yadirGetReport <- function(ReportType        = "CUSTOM_REPORT",
   result <- data.frame()
   for (i in 1:n) {
     df <- yadirGetReportFun(ReportType, 
-                            DateRangeType, 
-                            dates[i, "start"], 
-                            dates[i, "end"], 
-                            FieldNames, 
-                            FilterList,
-                            Goals,
-                            AttributionModels,
-                            IncludeVAT,
-                            IncludeDiscount,
-                            Login,
-                            AgencyAccount,
-                            Token,
-                            TokenPath,
-						    SkipErrors
+                           DateRangeType, 
+                           dates[i, "start"], 
+                           dates[i, "end"], 
+                           FieldNames, 
+                           FilterList,
+                           Goals,
+                           AttributionModels,
+                           IncludeVAT,
+                           IncludeDiscount,
+                           Login,
+                           AgencyAccount,
+                           Token,
+                           TokenPath
     )
-	
-	limit_reached <- attr(df, "limit_reached")
-	
     result <- rbind(result, df)
   }
   
   # logs
-  if (!is.null(FetchBy) && length(limit_reached) == 0) {
+  if (!is.null(FetchBy)) {
     packageStartupMessage('Function with batch processing mode has executed successfully.')
     packageStartupMessage("Total number of rows is: ", nrow(result))
     packageStartupMessage("Total executing time is: ", round(difftime(Sys.time(), st , units = "secs"), 0), " sec.")
   }
   
-    # check limits
-  if ( length(limit_reached) > 0 ) {
-   attr(result, "limit_reached") <- unique(limit_reached)
-  }  
   return(result)
 }

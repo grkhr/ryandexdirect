@@ -1,22 +1,22 @@
-# tech block auth
+# тех функция для авторизации в других функциях
 tech_auth <-  function(login = NULL, token = NULL, AgencyAccount = NULL, TokenPath = NULL) {
 
-  # if token not null skip auth
+  # Если задан токен то пропускаем проверку
   if (! is.null(token) ) {
-    # detect class of token object
+    # Определяем класс объекта содержащего токен
     if(class(token) == "list") {
       Token <- token$access_token 
     } else {
       Token <- token
     }
-  # if token is null go auth
+  # Если токен не задан то необходимо его получить
   } else {
-    # detect of account type, agency or client
+    # определяем тип аккаунта, агентский или клиентский
     load_login <- ifelse(is.null(AgencyAccount) || is.na(AgencyAccount), login, AgencyAccount)
-    # auth
+    # загружаем токен
     Token <- yadirAuth(Login = load_login, TokenPath = TokenPath, NewUser = FALSE)$access_token
   }
   
-  # return token obj
+  # возвразаем токен
   return(Token)
 }

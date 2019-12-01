@@ -22,11 +22,11 @@ yadirGetSiteLinks <- function(Login = NULL,
     queryBody <- paste0("{
                         \"method\": \"get\",
                         \"params\": {",
-                          ifelse( is.null(Ids), "", paste0("\"SelectionCriteria\": { \"Ids\": [",paste0(Ids, collapse = ","),"]}," )),"
-                          \"FieldNames\": [\"Id\", \"Sitelinks\"],
-                          \"Page\": {  
-                          \"Limit\": ",limit,",
-                          \"Offset\": ",offset,"}
+                        ifelse( is.null(Ids), "", paste0("\"SelectionCriteria\": { \"Ids\": [",paste0(Ids, collapse = ","),"]}," )),"
+                        \"FieldNames\": [\"Id\", \"Sitelinks\"],
+                        \"Page\": {  
+                        \"Limit\": ",limit,",
+                        \"Offset\": ",offset,"}
   }
   }")
     

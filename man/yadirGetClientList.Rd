@@ -1,7 +1,7 @@
 \name{yadirGetClientList}
 \alias{yadirGetClientList}
-\title{Get Client List From Agency Account}
-\description{Returns a list of advertisers - agency clients, their parameters and settings of the main representatives of the advertiser.}
+\title{Get client list with parameters and information}
+\description{yadirGetClientList function for agency account for get his clients list with all information}
 \usage{
 yadirGetClientList(AgencyAccount = NULL,
          Token         = NULL,
@@ -18,9 +18,10 @@ yadirGetClientList(AgencyAccount = NULL,
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
-my_client <- yadirGetClientList(AgencyAccount = "agency_login", 
-                                TokenPath = tempdir())
+library(ryandexdirect)
+my_client <- yadirGetClientList(AgencyAccount = "agency_login", TokenPath = "token_yandex")
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

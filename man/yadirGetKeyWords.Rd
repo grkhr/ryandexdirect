@@ -1,12 +1,9 @@
 \name{yadirGetKeyWords}
 \alias{yadirGetKeyWords}
-\title{Get Keywords}
-\description{Returns the parameters of key phrases or autotargets that match the specified criteria: the values of the placeholder variables, status and status, statistics of impressions and clicks, rates and priorities.}
+\title{Get keywords list from yandex direct account}
+\description{yadirGetKeyWords get лунцщквы id and parameters from Yandex Direct account}
 \usage{
-yadirGetKeyWords(CampaignIds = NULL, AdGroupIds = NA, Ids = NA, States
-                 = c("OFF", "ON", "SUSPENDED"), WithStats = T, Login =
-                 NULL, Token = NULL, AgencyAccount = NULL, TokenPath =
-                 getwd())
+yadirGetKeyWords(CampaignIds = NULL, AdGroupIds = NA, Ids = NA, States = c("OFF","ON","SUSPENDED"), WithStats = T, Login = NULL, Token = NULL)
 }
 
 \arguments{
@@ -20,17 +17,21 @@ yadirGetKeyWords(CampaignIds = NULL, AdGroupIds = NA, Ids = NA, States
   \item{AgencyAccount}{Your agency account login, if you get statistic from client account}
   \item{TokenPath}{Path to directory where you save credential data}
 }
-
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
 \value{data frame with campaings names and parameters}
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-
+#For get keywords data frame
+library(ryandexdirect)
 # get data from agency account
-### Please choose another TokenPath to save the Login permanently.
 my_keywords <- yadirGetKeyWords(Login = "client_login",
                                 AgencyAccount = "agency_login",
-                                TokenPath     = tempdir())
+                                TokenPath     = "token_yandex")
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

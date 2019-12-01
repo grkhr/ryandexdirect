@@ -1,7 +1,7 @@
 \name{yadirAuth}
 \alias{yadirAuth}
-\title{Authentication in 'Yandex Direct' API}
-\description{Get API Token for 'Yandex Direct' account}
+\title{Authentication in Yandex Direct API}
+\description{Get API Token for Yandex Direct account}
 \usage{
 yadirAuth(Login = NULL, NewUser = FALSE, TokenPath = getwd())
 }
@@ -14,10 +14,10 @@ yadirAuth(Login = NULL, NewUser = FALSE, TokenPath = getwd())
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
 library(ryandexdirect)
-yadirAuth(Login = "login", NewUser = TRUE,
-          TokenPath = tempdir())
+yadirAuth(Login = "login", NewUser = TRUE)
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

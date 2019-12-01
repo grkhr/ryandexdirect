@@ -1,7 +1,7 @@
 \name{yadirGetBalance}
 \alias{yadirGetBalance}
-\title{Get 'Yandex Direct' account balance}
-\description{Returns settings for shared accounts.}
+\title{Get yandex direct balance}
+\description{yadirGetBalance get data frame with information about you account.}
 \usage{
 yadirGetBalance(Logins        = NULL, 
                 Token         = NULL,     
@@ -15,26 +15,25 @@ yadirGetBalance(Logins        = NULL,
   \item{AgencyAccount}{Your agency account login, if you get statistic from client account}
   \item{TokenPath}{Path to directory where you save credential data}
 }
-
-\value{Data frame}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{data frame with campaings names and parameters}
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
-aut <- yadirAuth(Login = "login", NewUser = TRUE, 
-        TokenPath = tempdir())
 #For get accounts from client account use
-my_balance <- yadirGetBalance(Logins = "login",
-                              Token = aut)
+my_balance <- yadirGetBalance(Logins = "vasya",  Token = "abcdef123456")
 
 #For get accounts from agancy account use
 library(ryandexdirect)
-aut <- yadirAuth(Login = "agency_login", NewUser = TRUE, 
-                 TokenPath = tempdir())
+aut <- yadirAuth(Login = "agency_login", NewUser = TRUE, TokenPath = "token_yandex")
 client <- yadirGetClientList(Token = aut)
 client_balance <- yadirGetBalance(Logins = client$Login,
                                   AgencyAccount = "agency_login",
                                   Token = aut)
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

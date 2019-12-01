@@ -1,4 +1,5 @@
 yadirGetAdGroups <- function(CampaignIds   = NULL, 
+                             AdGroupIds    = NA, 
                              Ids           = NA, 
                              Types         = c("TEXT_AD_GROUP" ,"MOBILE_APP_AD_GROUP" ,"DYNAMIC_TEXT_AD_GROUP"),
                              Statuses      = c( "ACCEPTED", "DRAFT", "MODERATION", "PREACCEPTED", "REJECTED"), 
@@ -41,7 +42,7 @@ yadirGetAdGroups <- function(CampaignIds   = NULL,
   
   # check ids
   if (is.null(CampaignIds)) {
-    CampaignIds <-  yadirGetCampaignList(Logins        = Login,
+    CampaignIds <-  yadirGetCampaignList(Login         = Login,
                                          AgencyAccount = AgencyAccount,
                                          Token         = Token,
                                          TokenPath     = TokenPath)$Id
@@ -65,6 +66,7 @@ yadirGetAdGroups <- function(CampaignIds   = NULL,
     
     
     Ids             <- ifelse(is.na(Ids), NA,paste0(Ids, collapse = ","))
+    AdGroupIds      <- ifelse(is.na(AdGroupIds),NA,paste0(AdGroupIds, collapse = ","))
     CampaignIdsTmp  <- paste("\"",CampaignIds[camp_start:(camp_start + camp_step - 1)],"\"",collapse=", ",sep="")
     
     # set offset
@@ -76,37 +78,37 @@ yadirGetAdGroups <- function(CampaignIds   = NULL,
                           \"method\": \"get\",
                           \"params\": {
                           \"SelectionCriteria\": {
-                              \"CampaignIds\": [",CampaignIdsTmp,"],
-                              ",ifelse(is.na(Ids),"",paste0("\"Ids\": [",Ids,"],")),"      
-                              \"Types\": [",Types,"],
-                              \"Statuses\": [",Statuses,"]},
+                          \"CampaignIds\": [",CampaignIdsTmp,"],
+                          ",ifelse(is.na(Ids),"",paste0("\"Ids\": [",Ids,"],")),"      
+                          \"Types\": [",Types,"],
+                          \"Statuses\": [",Statuses,"]},
                           \"FieldNames\": [
-                              \"Id\",
-                              \"Name\",
-                              \"CampaignId\",
-                              \"RegionIds\",
-                              \"RestrictedRegionIds\",
-                              \"NegativeKeywords\",
-                              \"TrackingParams\",
-                              \"Status\",
-                              \"ServingStatus\",
-                              \"Type\",
-                              \"Subtype\"],
-                         \"MobileAppAdGroupFieldNames\":[
-                              \"StoreUrl\",
-                              \"TargetDeviceType\",
-                              \"TargetCarrier\",
-                              \"TargetOperatingSystemVersion\",
-                              \"AppIconModeration\",
-                              \"AppOperatingSystemType\",
-                              \"AppAvailabilityStatus\"],
-                         \"DynamicTextAdGroupFieldNames\":[
-                              \"DomainUrl\",
-                              \"DomainUrlProcessingStatus\"],
-                         \"DynamicTextFeedAdGroupFieldNames\":[
-                              \"Source\",
-                              \"SourceType\",
-                              \"SourceProcessingStatus\"],
+                          \"Id\",
+                          \"Name\",
+                          \"CampaignId\",
+                          \"RegionIds\",
+                          \"RestrictedRegionIds\",
+                          \"NegativeKeywords\",
+                          \"TrackingParams\",
+                          \"Status\",
+                          \"ServingStatus\",
+                          \"Type\",
+                          \"Subtype\"],
+                          \"MobileAppAdGroupFieldNames\":[
+                          \"StoreUrl\",
+                          \"TargetDeviceType\",
+                          \"TargetCarrier\",
+                          \"TargetOperatingSystemVersion\",
+                          \"AppIconModeration\",
+                          \"AppOperatingSystemType\",
+                          \"AppAvailabilityStatus\"],
+                          \"DynamicTextAdGroupFieldNames\":[
+                          \"DomainUrl\",
+                          \"DomainUrlProcessingStatus\"],
+                          \"DynamicTextFeedAdGroupFieldNames\":[
+                          \"Source\",
+                          \"SourceType\",
+                          \"SourceProcessingStatus\"],
                           \"Page\": {  
                           \"Limit\": 10000,
                           \"Offset\": ",lim,"}
@@ -159,6 +161,9 @@ yadirGetAdGroups <- function(CampaignIds   = NULL,
     # next campaings
     camp_start <- camp_start + camp_step
   }
+  
+  # delete NA rows
+  result <- subset(result, !is.na(result$Id))
   
   # set finish time
   stop_time <- Sys.time()

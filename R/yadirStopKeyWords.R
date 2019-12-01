@@ -3,34 +3,34 @@ yadirStopKeyWords <-  function(Login = NULL,
                                Token = NULL,
                                AgencyAccount = NULL,
                                TokenPath     = getwd()){
-  # auth
+  #Авторизация
   Token <- tech_auth(login = Login, token = Token, AgencyAccount = AgencyAccount, TokenPath = TokenPath)
   
   if(length(Ids) > 10000){
-    stop(paste0("In Ids set ",length(Ids), " keywords, limit 10000."))
+    stop(paste0("В параметр Ids переданы номера ",length(Ids), " ключевых слов, максимально допустимое количество ключевых слов в одном запросе 10000."))
   }
   
   if(is.null(Ids)){
-    stop("Ids is require.")
+    stop("В аргумент Ids необходимо передать вектор содержаший Id ключевых слов по которым необходимо остановить показ. Вы не передали ниодного Id.")
   }
   
-  # error counter
+  #Счётчик ошибок
   CounErr <- 0
   
-  # Error vector
+  #Error vector
   errors_id <-  vector()
   
-  # Set start time
+  #Фиксируем время начала работы
   start_time  <- Sys.time()
   
-  # Set offset
+  #Задаём начальный offset
   lim <- 0
   
-  # Start message
+  #Сообщение о начале обработки данных
   packageStartupMessage("Processing", appendLF = T)
   
   IdsPast <- paste0(Ids, collapse = ",")
-  # Request body
+  #Формируем тело POST запроса
   queryBody <- paste0("{
                       \"method\": \"suspend\",
                       \"params\": { 
@@ -39,16 +39,16 @@ yadirStopKeyWords <-  function(Login = NULL,
 }
 }")
   
-  # Send request
+  #Отправка запроса
   answer <- POST("https://api.direct.yandex.com/json/v5/keywords", body = queryBody, add_headers(Authorization = paste0("Bearer ",Token), 'Accept-Language' = "ru","Client-Login" = Login))
-  # Parsing
+  #Парсим ответ
   ans_pars <- content(answer)
-  # Check error
+  #Проверка ответа на наличие ошибки
   if(!is.null(ans_pars$error)){
-    stop(paste0("Error: ", ans_pars$error$error_string,". Message: ",ans_pars$error$error_detail, ". Request ID: ",ans_pars$error$request_id))
+    stop(paste0("Ошибка: ", ans_pars$error$error_string,". Сообщение: ",ans_pars$error$error_detail, ". ID Запроса: ",ans_pars$error$request_id))
   }
   
-  # Check of not processing keywords
+  #Проверка необработанных кампаний
   for(error_search in 1:length(ans_pars$result$SuspendResults)){
     if(!is.null(ans_pars$result$SuspendResults[[error_search]]$Errors)){
       CounErr <- CounErr + 1
@@ -57,20 +57,20 @@ yadirStopKeyWords <-  function(Login = NULL,
     }
   }
   
-  # Message about stoped keywords
+  #Подготовка сообщения про количество остановленных кампаний
   out_message <- ""
   
   TotalCampStoped <- length(Ids) - CounErr
   
   if(TotalCampStoped %in% c(2,3,4) & !(TotalCampStoped %% 100 %in% c(12,13,14))){
-    out_message <- "keywords stoped"
+    out_message <- "ключевых слова остановлено"
   } else if(TotalCampStoped %% 10 == 1 & TotalCampStoped %% 100 != 11){
-    out_message <- "keywords stoped"
+    out_message <- "ключевое слово остановлено"
   } else {
-    out_message <- "keywords stoped"
+    out_message <- "ключевых слов остновлено"
   }
   
-  # Out message
+  #Выводим информацию
   packageStartupMessage(paste0(TotalCampStoped, " ", out_message))
-  packageStartupMessage(paste0("Total durations: ", as.integer(round(difftime(Sys.time(), start_time , units ="secs"),0)), " sec."))
+  packageStartupMessage(paste0("Общее время работы функции: ", as.integer(round(difftime(Sys.time(), start_time , units ="secs"),0)), " сек."))
   return(errors_id)}

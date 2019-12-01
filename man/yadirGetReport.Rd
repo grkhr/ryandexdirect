@@ -1,16 +1,23 @@
 \name{yadirGetReport}
 \alias{yadirGetReport}
-\title{Get Report From 'Yandex Direct Report Service'}
-\description{The 'Service Report' is designed to get statistics on the advertiser's account. You must set period, choose report type and needed fields, and get statistic.}
+\title{Get report from yandex direct Report service}
+\description{The service Report is designed to get statistics on the advertiser's account. You must set period, choose report type and needed fields, and get statistic.}
 \usage{
-yadirGetReport(ReportType = "CUSTOM_REPORT", DateRangeType =
-                 "LAST_30_DAYS", DateFrom = NULL, DateTo = NULL,
-                 FieldNames = c("CampaignName", "Impressions",
-                 "Clicks", "Cost"), FilterList = NULL, Goals = NULL,
-                 AttributionModels = NULL, IncludeVAT = "YES",
-                 IncludeDiscount = "NO", Login = NULL, AgencyAccount =
-                 NULL, FetchBy = NULL, Token = NULL, TokenPath = getwd(), 
-				 SkipErrors = TRUE)
+yadirGetReport(ReportType        = "CUSTOM_REPORT", 
+               DateRangeType     = "LAST_30_DAYS", 
+               DateFrom          = NULL, 
+               DateTo            = NULL, 
+               FieldNames        = c("CampaignName","Impressions","Clicks","Cost"), 
+               FilterList        = NULL,
+               Goals             = NULL,
+               AttributionModels = NULL,
+               IncludeVAT        = "YES",
+               IncludeDiscount   = "NO",
+               Login             = NULL,
+               AgencyAccount     = NULL,
+               FetchBy           = NULL,
+               Token             = NULL,
+               TokenPath         = getwd())
 }
 
 \arguments{
@@ -29,7 +36,6 @@ yadirGetReport(ReportType = "CUSTOM_REPORT", DateRangeType =
   \item{FetchBy}{Split the query by date range. Allowed values: "DAY", "WEEK", "MONTH", "QUARTER", "YEAR".}
   \item{TokenPath}{Path to directory where you save credential data}
   \item{Token}{character or list object, your Yandex API Token, you can get this by function yadirGetToken or yadirAuth}
-  \item{SkipErrors}{Logical, if TRUE function skip all errors of API answer}
 }
 \details{
 Attribution model is the rule, what transition to consider the source of the visit.
@@ -40,16 +46,12 @@ Possible Values:
   \item{FC}{The first transition. The source of any visitor visits is his first visit to the site in the last 180 days. This model allows you to track the source of advertising, which first brought the client and thereby influenced all subsequent interactions with the site.}
   \item{LC}{The last transition. The source of the visit is considered to be a transition, as a result of which the visitor is currently visiting the site, regardless of the history of visits. This model can be used in the technical analysis of the site. To assess the performance of advertising campaigns, use the Last significant transition model.}
   \item{LSC}{Is the last significant transition. All sources of transitions for the last 90 days are conventionally divided into significant (your ads) and insignificant (transitions from saved pages, internal transitions or direct visits to the site). The source of the visit is considered to be an ad transition. If the visit occurred after an insignificant transition, then its source is considered the last transition on the ad. This model allows you to take into account the conversions that are lost in the model Last transition due to technical limitations on the duration of the visit.}
-  \item{LYDC}{Last click from Yandex.Direct. Of all the recent significant transitions, only Direct is taken into account. If a user at least once went to the site by an ad in Yandex.Direct, then this transition is considered the source of all subsequent visits - until the user clicks on the ad again. This model helps to see all the visits associated with the Directorate, including those that would be attributed to other sources in other attribution models.}
 }
  
 The AttributionModels parameter can be specified only if the Goals parameter is specified. If the Goals parameter is specified, and the AttributionModels parameter is not, the default value is LSC.
 
 If several attribution models are specified, the data will be displayed for each model separately.
 
-}
-\seealso{
-For get more ditails see vignett \code{vignette("yandex-direct-get-stat", package = "ryandexdirect")}
 }
 \references{
 \href{https://tech.yandex.ru/direct/doc/reports/reports-docpage/}{Official docs of 'Service Reports'}
@@ -66,9 +68,10 @@ For get more ditails see vignett \code{vignette("yandex-direct-get-stat", packag
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
-# For get Report from client account
+#Load package
+library(ryandexdirect)
+
+#For get Report from client account
 statAgency <- yadirGetReport(ReportType       = "ACCOUNT_PERFORMANCE_REPORT", 
                              DateRangeType    = "CUSTOM_DATE", 
                              DateFrom         = "2018-01-01", 
@@ -77,16 +80,15 @@ statAgency <- yadirGetReport(ReportType       = "ACCOUNT_PERFORMANCE_REPORT",
                                                   "Impressions",
                                                   "Clicks",
                                                   "Cost"), 
-							 Goals = c(182453, 
-							           182452, 
-							           234588),
+							 Goals             = c(182453, 182452, 23458860),
 							 AttributionModels = c("LSC", "LC"),
                              IncludeVAT        = "YES", 
                              IncludeDiscount   = "NO", 
-                             Login             = "client_login", 
-                             TokenPath         = tempdir())
+                             Login             = "client_login",
+                             FetchBy           = "MONTH", 
+                             TokenPath         = "C:/token_yandex")
 							 
-# For get data from agency client account
+#For get data from agency client account
 statAgency <- yadirGetReport(ReportType = "ACCOUNT_PERFORMANCE_REPORT", 
                              DateRangeType = "CUSTOM_DATE", 
                              DateFrom = "2018-01-01", 
@@ -98,7 +100,11 @@ statAgency <- yadirGetReport(ReportType = "ACCOUNT_PERFORMANCE_REPORT",
                              IncludeVAT = "YES", 
                              IncludeDiscount = "NO", 
                              Login = "client_login", 
-                             AgencyAccount = "aguncy_login",
-                             TokenPath = tempdir())
+                             AgencyAccount = "agency_login",
+                             TokenPath = "C:/token_yandex")
+
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

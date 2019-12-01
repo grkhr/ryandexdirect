@@ -1,20 +1,18 @@
 \name{yadirGetToken}
 \alias{yadirGetToken}
-\title{Auth in 'Yandex Direct' API}
-\description{Simplified, one-step API authorization.}
+\title{get api yandex developer token}
+\description{this function open web browser for get api yandex direct token}
 \usage{
-yadirGetToken(Login = NULL, TokenPath = getwd())
+yadirGetToken()
 }
-\arguments{
-  \item{Login}{character, your login at Yandex, require}
-  \item{TokenPath}{Path to directory where you save credential data}
-}
+
 \value{R object with api token}
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
-myToken <- yadirGetToken(TokenPath = tempdir())
+myToken <- yadirGetToken()
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

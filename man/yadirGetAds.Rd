@@ -1,7 +1,7 @@
 \name{yadirGetAds}
 \alias{yadirGetAds}
-\title{Get Ads List From 'Yandex Direct' account}
-\description{Returns the parameters of ads that match the specified criteria.}
+\title{Get ads list from yandex direct account}
+\description{yadirGetCampaignList get ads id and parameters from Yandex Direct account}
 \usage{
 yadirGetAds(CampaignIds   = NULL, 
             AdGroupIds    = NA, 
@@ -23,26 +23,30 @@ yadirGetAds(CampaignIds   = NULL,
   \item{AgencyAccount}{Your agency account login, if you get statistic from client account}
   \item{TokenPath}{Path to directory where you save credential data}
 }
-
-\value{Data Frame}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{data frame with campaings names and parameters}
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
-### Please choose another TokenPath to save the Login permanently.
 #For get ads data frame
 # Get ads from client account
-aut <- yadirAuth(Login = "login", NewUser = TRUE,
-                 TokenPath = tempdir())
+library(ryandexdirect)
+aut <- yadirAuth(Login = "login", NewUser = TRUE)
 my_ads  <- yadirGetAds(Login = "login",
                        Token = aut)
 					   
 # Get data from agency account
-aut <- yadirAuth(Login = "agency_login", NewUser = TRUE,
-                 TokenPath = tempdir())
+library(ryandexdirect)
+
+aut <- yadirAuth(Login = "agency_login", NewUser = TRUE)
 
 my_ads  <- yadirGetAds(Login = "client_login",
 					   AgencyAccount = "agency_login",
                        Token = aut)
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

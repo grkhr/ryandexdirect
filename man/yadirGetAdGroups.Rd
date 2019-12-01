@@ -1,22 +1,17 @@
 \name{yadirGetAdGroups}
 \alias{yadirGetAdGroups}
-\title{Get AdGroups List}
-\description{Returns parameters of adgroups that meet specified criteria.}
+\title{Get adgroups list from yandex direct account}
+\description{yadirGetCampaignList get adgroups id and parameters from Yandex Direct account}
 \usage{
 yadirGetAdGroups(CampaignIds   = NULL, 
-                 Ids           = NA, 
-                 Types         = c("TEXT_AD_GROUP" ,
-				             "MOBILE_APP_AD_GROUP" ,
-						   "DYNAMIC_TEXT_AD_GROUP"),
-                 Statuses      = c("ACCEPTED", 
-				                   "DRAFT", 
-			                       "MODERATION", 
-								   "PREACCEPTED", 
-								   "REJECTED"), 
-                 Login         = NULL,
-                 AgencyAccount = NULL,
-                 Token         = NULL,
-                 TokenPath     = getwd())
+                             AdGroupIds    = NA, 
+                             Ids           = NA, 
+                             Types         = c("TEXT_AD_GROUP" ,"MOBILE_APP_AD_GROUP" ,"DYNAMIC_TEXT_AD_GROUP"),
+                             Statuses      = c( "ACCEPTED", "DRAFT", "MODERATION", "PREACCEPTED", "REJECTED"), 
+                             Login         = NULL,
+                             AgencyAccount = NULL,
+                             Token         = NULL,
+                             TokenPath     = getwd())
 }
 
 \arguments{
@@ -29,21 +24,26 @@ yadirGetAdGroups(CampaignIds   = NULL,
   \item{AgencyAccount}{Your agency account login, if you get statistic from client account}
   \item{TokenPath}{Path to directory where you save credential data}
 }
-
-\value{data frame with adgroups names and parameters}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{data frame with campaings names and parameters}
 \author{Alexey Seleznev}
 
 \examples{
-\dontrun{
 #For get adgroups data frame
 # Get data from clients account
+library(ryandexdirect)
 my_ad_group <- yadirGetAdGroups(Login = "login")
 
 # Get data from agency account
-### !!!Please choose another TokenPath to save the Login permanently.
+library(ryandexdirect)
 my_ad_group <- yadirGetAdGroups(Login         = "client_login",
                                 AgencyAccount = "agency_login",
-								TokenPath     =  tempdir())
+								TokenPath     = "token_yandex")
 
 }
-}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
