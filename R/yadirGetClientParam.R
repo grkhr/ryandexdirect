@@ -78,11 +78,11 @@ yadirGetClientParam <- function(Language = "ru",
 
     #Auaiaei eioi?iaoe? i ?aaioa cai?ina e i eiee?anoaa aaeeia
      #packageStartupMessage("Ni?aai?iee oniaoii caa?o?ai!", appendLF = T)
-     packageStartupMessage(paste0("gseegseg: " ,answer$headers$`units-used-login`), appendLF = T)
-     packageStartupMessage(paste0("esgegs: " ,strsplit(answer$headers$units, "/")[[1]][1]), appendLF = T)
-     packageStartupMessage(paste0("sgeegegs: " ,strsplit(answer$headers$units, "/")[[1]][2]), appendLF = T)
-     packageStartupMessage(paste0("esgegs: " ,strsplit(answer$headers$units, "/")[[1]][3]), appendLF = T)
-     packageStartupMessage(paste0("esgesgesg: ",answer$headers$requestid), appendLF = T)
+     packageStartupMessage(paste0("gseegseg:" ,answer$headers$`units-used-login`), appendLF = T)
+     packageStartupMessage(paste0("esgegs:" ,strsplit(answer$headers$units, "/")[[1]][1]), appendLF = T)
+     packageStartupMessage(paste0("sgeegegs:" ,strsplit(answer$headers$units, "/")[[1]][2]), appendLF = T)
+     packageStartupMessage(paste0("esgegs:" ,strsplit(answer$headers$units, "/")[[1]][3]), appendLF = T)
+     packageStartupMessage(paste0("esgesgesg:",answer$headers$requestid), appendLF = T)
 
      # ??????????? ? ?????? ??????????
      result <- rbind(result, dictionary_df)
