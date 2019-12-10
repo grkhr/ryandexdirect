@@ -1,5 +1,5 @@
 yadirGetCampaignList <-
-function (Logins          = NULL, 
+function (Logins          = NULL,
           States          = c("OFF","ON","SUSPENDED","ENDED","CONVERTED","ARCHIVED"),
           Types           = c("TEXT_CAMPAIGN","MOBILE_APP_CAMPAIGN","DYNAMIC_TEXT_CAMPAIGN","CPM_BANNER_CAMPAIGN"),
           Statuses        = c("ACCEPTED","DRAFT","MODERATION","REJECTED"),
@@ -45,13 +45,13 @@ lim <- 0
 packageStartupMessage("Processing", appendLF = F)
 
 # main cycle
-while(lim != "stoped"){  
+while(lim != "stoped"){
 # forming the body of a query
 queryBody <- paste0("{
   \"method\": \"get\",
-  \"params\": { 
+  \"params\": {
     \"SelectionCriteria\": {
-                      \"States\": [",States,"],        
+                      \"States\": [",States,"],
                       \"Types\": [",Types,"],
                       \"StatusesPayment\": [",StatusesPayment,"],
                       \"Statuses\": [",Statuses,"]},
@@ -66,7 +66,7 @@ queryBody <- paste0("{
                     \"Currency\",
                     \"DailyBudget\",
                     \"ClientInfo\"],
-    \"Page\": {  
+    \"Page\": {
       \"Limit\": 10000,
       \"Offset\": ",lim,"
     }
@@ -74,23 +74,23 @@ queryBody <- paste0("{
 }")
 
 
-    
+
     for(l in 1:length(Logins)){
       # auth
       Token <- tech_auth(login = Logins[l], token = Token, AgencyAccount = AgencyAccount, TokenPath = TokenPath)
-      
+
       answer <- POST("https://api.direct.yandex.com/json/v5/campaigns", body = queryBody, add_headers(Authorization = paste0("Bearer ",Token), 'Accept-Language' = "ru","Client-Login" = Logins[l]))
       # answer processing
       stop_for_status(answer)
       dataRaw <- content(answer, "parsed", "application/json")
-      
+
         if(length(dataRaw$error) > 0){
             stop(paste0(dataRaw$error$error_string, " - ", dataRaw$error$error_detail))
            }
-      
+
       # answer parsing
       for (i in 1:length(dataRaw$result$Campaigns)){
-        
+
         try(result <- rbind(result,
                         data.frame(Id                 = dataRaw$result$Campaigns[[i]]$Id,
                                    Name               = dataRaw$result$Campaigns[[i]]$Name,
@@ -105,25 +105,25 @@ queryBody <- paste0("{
                                    Clicks             = ifelse(is.null(dataRaw$result$Campaigns[[i]]$Statistics$Clicks), NA,dataRaw$result$Campaigns[[i]]$Statistics$Clicks),
                                    ClientInfo         = dataRaw$result$Campaigns[[i]]$ClientInfo,
                                    Login              = Logins[l])), silent = T)
-        
+
       }
     }
 
   packageStartupMessage(".", appendLF = F)
-  #Проверяем остались ли ещё строки которые надо забрать
+  #????????? ???????? ?? ??? ?????? ??????? ???? ???????
   lim <- ifelse(is.null(dataRaw$result$LimitedBy), "stoped",dataRaw$result$LimitedBy + 1)
 }
 
 # parsing beta-campaigns through yadirGetReport
 if (length(Betas) > 0)
 {
-  betacampaigns <- suppressWarnings(suppressMessages(yadirGetReport(ReportType = "CAMPAIGN_PERFORMANCE_REPORT", 
-                                                                    DateRangeType = "ALL_TIME", 
-                                                                    FieldNames = c("CampaignId","CampaignName","CampaignType","Impressions","Clicks"), 
+  betacampaigns <- suppressWarnings(suppressMessages(yadirGetReport(ReportType = "CAMPAIGN_PERFORMANCE_REPORT",
+                                                                    DateRangeType = "ALL_TIME",
+                                                                    FieldNames = c("CampaignId","CampaignName","CampaignType","Impressions","Clicks"),
                                                                     Login = Logins[l],
                                                                     Token = Token,
-                                                                    FilterList = c("CampaignType IN SMART_BANNER_CAMPAIGN;MCBANNER_CAMPAIGN"))))
-  
+                                                                    FilterList = c("CampaignType IN SMART_BANNER_CAMPAIGN;MCBANNER_CAMPAIGN;SMART_CAMPAIGN"))))
+
   # merging main result with beta-campaigns
   if (nrow(betacampaigns))
   {
@@ -148,6 +148,6 @@ stop_time <- Sys.time()
 packageStartupMessage("Done", appendLF = T)
 packageStartupMessage(paste0("Number of campaigns received: ", nrow(result)), appendLF = T)
 packageStartupMessage(paste0("Processing time: ", round(difftime(stop_time, start_time , units ="secs"),0), " sec."), appendLF = T)
-#Возвращаем результат
+#?????????? ?????????
 return(result)
 }
