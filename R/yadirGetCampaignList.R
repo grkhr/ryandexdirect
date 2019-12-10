@@ -121,8 +121,7 @@ if (length(Betas) > 0)
                  "SMART_CAMPAIGN",
                  "CONTENT_PROMOTION_CAMPAIGN",
                  "CPM_DEALS_CAMPAIGN",
-                 "CPM_FRONTPAGE_CAMPAIGN",
-                 "MCBANNER_CAMPAIGN")
+                 "CPM_FRONTPAGE_CAMPAIGN")
   betacampaigns <- suppressWarnings(suppressMessages(yadirGetReport(ReportType = "CAMPAIGN_PERFORMANCE_REPORT",
                                                                     DateRangeType = "ALL_TIME",
                                                                     FieldNames = c("CampaignId","CampaignName","CampaignType","Impressions","Clicks"),
