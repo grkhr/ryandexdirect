@@ -117,12 +117,20 @@ queryBody <- paste0("{
 # parsing beta-campaigns through yadirGetReport
 if (length(Betas) > 0)
 {
+  camp_list <- c("MCBANNER_CAMPAIGN",
+                 "SMART_CAMPAIGN",
+                 "CONTENT_PROMOTION_CAMPAIGN",
+                 "CPM_DEALS_CAMPAIGN",
+                 "CPM_FRONTPAGE_CAMPAIGN",
+                 "MCBANNER_CAMPAIGN")
   betacampaigns <- suppressWarnings(suppressMessages(yadirGetReport(ReportType = "CAMPAIGN_PERFORMANCE_REPORT",
                                                                     DateRangeType = "ALL_TIME",
                                                                     FieldNames = c("CampaignId","CampaignName","CampaignType","Impressions","Clicks"),
                                                                     Login = Logins[l],
-                                                                    Token = Token,
-                                                                    FilterList = c("CampaignType IN SMART_BANNER_CAMPAIGN;MCBANNER_CAMPAIGN;SMART_CAMPAIGN"))))
+                                                                    Token = Token
+                                                                    ,
+                                                                    FilterList = c(paste0("CampaignType IN ",paste0(camp_list, collapse = ";")))
+                                                                    )))
 
   # merging main result with beta-campaigns
   if (nrow(betacampaigns))
